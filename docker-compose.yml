@@ -1,0 +1,10 @@
+services:
+  cl_okpd2:
+    image: cl_okpd2
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: cl_okpd2
+    volumes:
+      - ./cl_okpd2:/app/cl_okpd2
+      - ./tmp:/app/tmp

@@ -1,0 +1,73 @@
+[project]
+name = "vkr-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "catboost>=1.2.8",
+    "joblib>=1.5.1",
+    "kneed>=0.8.5",
+    "matplotlib>=3.10.3",
+    "nltk>=3.9.1",
+    "numpy>=1.26.4",
+    "pandas>=2.2.3",
+    "plotly>=6.1.2",
+    "scikit-learn>=1.6.1",
+    "seaborn>=0.13.2",
+    "typer>=0.16.0",
+    "xgboost>=3.0.2",
+]
+
+[tool.ruff]
+include = ["cl_okpd2/*"]
+target-version = "py313"
+line-length = 99
+
+[tool.ruff.lint]
+extend-select = [
+   "I",      # isort
+   "C90",    # mccabe
+   "N",      # pep8-naming
+   "UP",     # pyupgrade
+   "S",      # flake8-bandit
+   "BLE",    # flake8-blind-except
+   "B",      # flake8-bugbear
+   "C4",     # flake8-comprehensions
+   "DTZ",    # flake8-datetimez
+   "EM",     # flake8-errmsg
+   "PIE",    # flake8-pie
+   "PT",     # flake8-pytest-style
+   "SIM",    # flake8-simplify,
+   "COM",    # flake8-commas
+   "ICN",    # flake8-import-conventions
+   "G",      # flake8-logging-format
+   "Q",      # flake8-quotes
+   "RSE",    # flake8-raise,
+   "TC",     # flake8-type-checking
+   "ARG",    # flake8-unused-arguments
+]
+extend-ignore = [  # ingore due to using ruff format
+   "W191",
+   "E111",
+   "E114",
+   "E117",
+   "D206",
+   "D300",
+   "Q000",
+   "Q001",
+   "Q002",
+   "Q003",
+   "COM812",
+   "COM819",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "ruff>=0.12.3",
+]
