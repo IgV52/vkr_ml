@@ -1,21 +1,16 @@
-from nltk import RegexpTokenizer, download, word_tokenize
+from nltk import RegexpTokenizer, word_tokenize
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 from pandas import DataFrame
+from stanza import Pipeline
 
 LEMMATIZER = None
-STOP_WORDS = set()
+STOP_WORDS = None
 
 
 def init_nltk() -> None:
-    global LEMMATIZER
     global STOP_WORDS
 
-    if not all((LEMMATIZER, STOP_WORDS)):
-        for i in ("punkt_tab", "wordnet", "stopwords"):
-            download(i, download_dir=".venv/nltk_data")
-
-        LEMMATIZER = WordNetLemmatizer()
+    if not STOP_WORDS:
         STOP_WORDS = set(stopwords.words("russian"))
         STOP_WORDS.update(
             (
@@ -31,8 +26,26 @@ def init_nltk() -> None:
         )
 
 
+def init_stanza() -> None:
+    global LEMMATIZER
+
+    if not LEMMATIZER:
+        LEMMATIZER = Pipeline("ru")
+
+
 def regex_tokenizer(sent: str):
     return RegexpTokenizer(r"\w+").tokenize(sent)
+
+
+def lemmatize(text: str) -> str:
+    doc = LEMMATIZER(text)
+    return " ".join(w.lemma for i in doc.sentences for w in i.words)
+
+
+def preprocess_lemmatize(df: DataFrame) -> DataFrame:
+    init_stanza()
+    df["clean_text"] = df["clean_text"].apply(lemmatize)
+    return df
 
 
 def clean_text(text: str):

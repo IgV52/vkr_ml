@@ -1,6 +1,7 @@
 from os.path import join as os_join
 
 import pandas as pd
+from rich.console import Console
 
 from cl_okpd2.constants import CHUNK_SIZE, MAP_OKPD2_CODE, NEW_DATA_DIRNAME, ModelTypes
 from cl_okpd2.etl import extract_draft_data, extract_uniq_data
@@ -47,7 +48,17 @@ def fit_save(ml_model_name: ModelTypes, path_data: str):
 
 
 def predict(ml_model_name: ModelTypes, text: str):
+    console = Console()
     model = CustomML(model_type=ml_model_name, df=pd.DataFrame([text], columns=["text"]))
     model.load_model()
     pred = model.predict()
-    print(f"Возможный код ОКПД-2: {pred} - {MAP_OKPD2_CODE.get(pred, f'ОШИБКА {pred}')}")
+    print()
+    if name_okpd2 := MAP_OKPD2_CODE.get(pred):
+        console.print(f"[green]На вход пришел текст[/green][blue]:[/blue] [gray]{text}[/gray]")
+        print()
+        console.print(
+            f"[green]Возможный код ОКПД-2[/green][blue]:[/blue] [yellow]{pred} - {name_okpd2}[/yellow]"
+        )
+    else:
+        console.print(f"[bold_ ed]{text} - ОШИБКА[/bold red]")
+    print()

@@ -17,7 +17,7 @@ from sklearn.metrics.pairwise import cosine_distances
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 
-from cl_okpd2.cleanings import preprocess_dataframe
+from cl_okpd2.cleanings import preprocess_dataframe, preprocess_lemmatize
 from cl_okpd2.constants import MODELS_PATH
 
 
@@ -72,6 +72,7 @@ class CustomML:
         self.df = df.loc[df["code"].isin(counts.loc[counts >= min_qty].index)].reset_index(
             drop=True
         )
+        self.df = preprocess_lemmatize(df=self.df)
 
     def save_heat_map(self, y_test, predict_x_test, classes, data_type):
         cm = confusion_matrix(y_test, predict_x_test, labels=classes)
@@ -132,7 +133,9 @@ class CustomML:
 
     def predict(self) -> str:
         df = preprocess_dataframe(df=self.df)
+        df = preprocess_lemmatize(df=df)
         res = self.model.predict(self.vecrotize.transform(df["clean_text"]))
+
         match self.model_type:
             case ModelTypes.CAT_BOOST:
                 answer = res[0][0]

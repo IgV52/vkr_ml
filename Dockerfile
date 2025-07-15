@@ -21,14 +21,18 @@ COPY ./.python-version ./.python-version
 COPY ./pyproject.toml ./pyproject.toml
 COPY ./uv.lock ./uv.lock
 
-RUN uv sync --no-cache
+RUN uv sync --no-dev --no-cache
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app"
 
+RUN python -c "import stanza; stanza.download('ru')"
+
 COPY ./cl_okpd2 ./cl_okpd2
 COPY ./models ./models
 COPY ./manager.py ./manager.py
+
+RUN python cl_okpd2/download_nltk_corpus.py
 
 ENTRYPOINT [ "sh", "-c", "python /app/manager.py predict \"$@\"", "--" ]
