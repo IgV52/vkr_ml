@@ -6,10 +6,12 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "catboost>=1.2.8",
+    "ipywidgets>=8.1.7",
     "joblib>=1.5.1",
     "kneed>=0.8.5",
     "matplotlib>=3.10.3",
     "nltk>=3.9.1",
+    "notebook>=7.4.4",
     "numpy>=1.26.4",
     "pandas>=2.2.3",
     "plotly>=6.1.2",
@@ -23,6 +25,7 @@ dependencies = [
 
 [tool.ruff]
 include = ["cl_okpd2/*"]
+exclude = ["nb.ipynb"]
 target-version = "py313"
 line-length = 99
 

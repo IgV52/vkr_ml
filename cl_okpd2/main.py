@@ -54,7 +54,9 @@ def predict(ml_model_name: ModelTypes, text: str):
     pred = model.predict()
     print()
     if name_okpd2 := MAP_OKPD2_CODE.get(pred):
-        console.print(f"[green]На вход пришел текст[/green][blue]:[/blue] [gray]{text}[/gray]")
+        console.print(
+            f"[green]На вход пришел текст[/green][blue]:[/blue] [bold magenta]{text}[/bold magenta]"
+        )
         print()
         console.print(
             f"[green]Возможный код ОКПД-2[/green][blue]:[/blue] [yellow]{pred} - {name_okpd2}[/yellow]"
